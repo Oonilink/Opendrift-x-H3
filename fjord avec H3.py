@@ -1,13 +1,17 @@
+'''import h3 from h3
 from h3.api.basic_int import (
     latlng_to_cell,
     cell_to_latlng,
     cell_to_boundary
-)
+)'''
+import h3
+
 import folium
 
 from datetime import datetime
 import numpy as np
 import pandas as pd
+
 
 from datetime import timedelta
 from opendrift.readers import reader_global_landmask
@@ -85,33 +89,32 @@ print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 print(len(lats_final))
 print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
 
-
-
 print("coucouuuuuu")
-
 
 resolution = 9
 
-
 #inti de la carte Foilum
-h3_index_init = latlng_to_cell(61.117594, 6.55, resolution)
+#h3_index_init = latlng_to_cell(61.117594, 6.55, resolution)
+h3_index_init = h3.latlng_to_cell(61.117594, 6.55, resolution)
 
-center_inti = cell_to_latlng(h3_index_init)
+#center_inti = cell_to_latlng(h3_index_init)
+center_inti = h3.cell_to_latlng(h3_index_init)
+
 print(f"Center intitialisation (lat, lng): {center_inti}")
 m = folium.Map(location=center_inti, zoom_start=9)
 
 for i in range(4999):
 
     # Convert coordinates to H3 index
-    h3_index = latlng_to_cell(lats_final[i][12], lons_final[i][12], resolution)
+    h3_index = h3.latlng_to_cell(lats_final[i][12], lons_final[i][12], resolution)
     print(f"H3 Index: {h3_index}")
 
     # Get center coordinates of the cell
-    center = cell_to_latlng(h3_index)
+    center = h3.cell_to_latlng(h3_index)
     print(f"Center (lat, lng): {center}")
 
     # Get boundary of the cell
-    boundary = cell_to_boundary(h3_index)
+    boundary = h3.cell_to_boundary(h3_index)
     boundary = [(lat, lng) for lat, lng in boundary]  # ensure (lat, lon) order
     boundary.append(boundary[0])  # close polygon
 
