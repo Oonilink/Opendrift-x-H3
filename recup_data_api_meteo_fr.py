@@ -166,7 +166,7 @@ def recup_data_arome_meteo_f(latitudes_zone, longitudes_zone, time_zone):
         exit(1)
 
 if __name__ == "__main__":
-
+    
     recup_data_arome_meteo_f("43,52.5"
                              , "-9,3.5"
                              , "2026-01-03T00:00:00Z")
