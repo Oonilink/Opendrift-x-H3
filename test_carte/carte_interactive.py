@@ -159,7 +159,7 @@ for t in range(nb_epoque - 1):
         ).add_to(m)
 """
 # Sauvegarde carte
-m.save("carte_h3_2.html")
+m.save("test_carte/carte_h3_2.html")
 
 
 

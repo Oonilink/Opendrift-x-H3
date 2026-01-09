@@ -37,7 +37,7 @@ o.seed_elements(lon=6.55, lat=61.117594, radius=50, number=10, time=time, object
 
 #%%
 # Running model for 12 hours, using small time step due to high resolution coastline
-o.run(duration=timedelta(hours=12), outfile='simulation_result_fjord.nc', time_step=300, time_step_output=3600)
+o.run(duration=timedelta(hours=12), outfile='test_carte/simulation_result_fjord.nc', time_step=300, time_step_output=3600)
 
 #%%
 # Print and plot results
