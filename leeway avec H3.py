@@ -5,13 +5,10 @@ from h3.api.basic_int import (
     cell_to_boundary
 )'''
 import h3
-
 import folium
-
 from datetime import datetime
 import numpy as np
 import pandas as pd
-
 
 from datetime import timedelta
 from opendrift.readers import reader_global_landmask
@@ -122,4 +119,4 @@ for i in range(4999):
 
     folium.Polygon(locations=boundary, color='green', weight=1, fill=True, fill_opacity=0.4).add_to(m)
 
-m.save("carte_h3.html")
+m.save("carte_h3_test.html")
