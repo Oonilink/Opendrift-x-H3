@@ -1,6 +1,7 @@
 import os
 import requests
 from dotenv import load_dotenv
+import xarray as xr
 
 
 def recup_data_arome_meteo_f(latitudes_zone, longitudes_zone, time_zone):
@@ -54,7 +55,7 @@ def recup_data_arome_meteo_f(latitudes_zone, longitudes_zone, time_zone):
     #   - TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND (température)
     #   - TOTAL_WATER_PRECIPITATION__GROUND_OR_WATER_SURFACE (pluie)
     #
-    coverage_id = "WIND_SPEED__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND___"+ time_zone.replace(":",".")
+    coverage_id = "U_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND___"+ time_zone.replace(":",".")
 
     # URL de base du service WCS GetCoverage de Météo France
     # Format: https://public-api.meteofrance.fr/public/arome/1.0/wcs/<modèle-WCS>/GetCoverage
@@ -100,7 +101,8 @@ def recup_data_arome_meteo_f(latitudes_zone, longitudes_zone, time_zone):
     # Chemin du fichier de sortie
     # Le fichier sera au format GRIB2 (extension .nc par convention, mais c'est du GRIB)
     #On lui donne un nom qui dépend de la date de la zone
-    out_file = "data/arome_" + time_zone + ".nc"
+    out_file = "data/arome_u" + time_zone 
+    
 
     # ============================================================================
     # TÉLÉCHARGEMENT ET SAUVEGARDE
@@ -164,9 +166,91 @@ def recup_data_arome_meteo_f(latitudes_zone, longitudes_zone, time_zone):
     except Exception as e:
         print(f"✗ Erreur inattendue: {type(e).__name__} - {e}")
         exit(1)
+        
+
+
+import xarray as xr
+
+def fusionner_uv(grib_u_path, grib_v_path, output_nc_path):
+    """
+    Fusionne deux fichiers GRIB2 (U et V) en un seul NetCDF compatible OpenDrift.
+    
+    Parameters
+    ----------
+    grib_u_path : str
+        Chemin du fichier GRIB2 contenant la composante U.
+    grib_v_path : str
+        Chemin du fichier GRIB2 contenant la composante V.
+    output_nc_path : str
+        Chemin du fichier NetCDF de sortie.
+    """
+
+    print("Ouverture des fichiers GRIB2...")
+    ds_u = xr.open_dataset(grib_u_path, engine="cfgrib")
+    ds_v = xr.open_dataset(grib_v_path, engine="cfgrib")
+
+    print("Fusion des datasets...")
+    ds_merged = xr.merge([ds_u, ds_v], compat="override")
+
+    print("Renommage des variables pour Opendrift...")
+    rename_vars = {}
+    for var in ds_merged.data_vars:
+        if "U_COMPONENT_OF_WIND" in var:
+            rename_vars[var] = "u"
+        elif "V_COMPONENT_OF_WIND" in var:
+            rename_vars[var] = "v"
+    ds_merged = ds_merged.rename(rename_vars)
+
+    print("Renommage des coordonnées...")
+    if "x" in ds_merged.dims:
+        ds_merged = ds_merged.rename({"x": "longitude"})
+    if "y" in ds_merged.dims:
+        ds_merged = ds_merged.rename({"y": "latitude"})
+
+    print("Vérification de la dimension 'time'...")
+
+    # Si 'time' n'existe pas comme coordonnée
+    if "time" not in ds_merged.coords:
+        if "valid_time" in ds_merged.coords:
+            ds_merged = ds_merged.rename({"valid_time": "time"})
+        elif "forecast_reference_time" in ds_merged.coords:
+            ds_merged = ds_merged.rename({"forecast_reference_time": "time"})
+    # Si 'time' existe déjà mais 'valid_time' aussi → on drop valid_time
+    elif "valid_time" in ds_merged.coords:
+        ds_merged = ds_merged.drop_vars("valid_time")
+
+    # Forcer time à 1D si scalar
+    if ds_merged["time"].ndim == 0:
+        ds_merged = ds_merged.expand_dims("time")
+
+    # Sauvegarde du fichier NetCDF
+    print(f"Sauvegarde du fichier NetCDF compatible OpenDrift : {output_nc_path}")
+    ds_merged.to_netcdf(output_nc_path)
+    print("✔ Terminé !")
+
+
+
+
 
 if __name__ == "__main__":
     
-    recup_data_arome_meteo_f("43,52.5"
+    
+    fusionner_uv(
+        "data/arome_u2026-01-11T00:00:00Z",
+        "data/arome_v2026-01-11T00:00:00Z",
+        "data/arome_uv_2026-01-11T00:00:00Z.nc"
+    )
+    
+
+    
+    """
+        recup_data_arome_meteo_f("43,52.5"
                              , "-9,3.5"
-                             , "2026-01-03T00:00:00Z")
+                             , "2026-01-11T00:00:00Z")
+                             
+    """
+    
+    
+
+    
+    

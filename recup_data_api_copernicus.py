@@ -35,6 +35,11 @@ def recup_data_copernicus(lat_min, lat_max, lon_min, lon_max, date_start, date_e
     #for dataset in catalogue_001_024.products[0].datasets:
     #    print(dataset.dataset_id)
 
+    lat_min = float(lat_min)
+    lat_max = float(lat_max)
+    lon_min = float(lon_min)
+    lon_max = float(lon_max)
+
 
     copernicusmarine.subset(
         dataset_id="cmems_mod_glo_phy_anfc_0.083deg_PT1H-m",  # dataset avec courants
@@ -47,7 +52,7 @@ def recup_data_copernicus(lat_min, lat_max, lon_min, lon_max, date_start, date_e
         end_datetime=date_end,
         minimum_depth=0,          # surface
         maximum_depth=5,          # près de surface
-        output_filename="courants_manche_atl"+str(lon_min)+ ","+str(lon_max)+ ";"+str(lat_min)+ ","+str(lat_max)+  ","+str(date_start)+".nc",
+        output_filename = f"courants_manche_atl_{lon_min}-{lon_max}_{lat_min}-{lat_max}_{date_start}.nc",
         output_directory="data_copernicus"
     )
 

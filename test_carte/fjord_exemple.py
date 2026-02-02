@@ -11,6 +11,10 @@ import os
 from datetime import datetime
 import numpy as np
 import pandas as pd
+import xarray as xr
+import shutil
+from pathlib import Path
+
 
 
 ssl._create_default_https_context = lambda: ssl.create_default_context(cafile=certifi.where())
@@ -21,23 +25,31 @@ from opendrift.readers import reader_global_landmask
 from opendrift.readers import reader_netCDF_CF_generic
 from opendrift.models.leeway import Leeway
 
+
+
+
 o = Leeway(loglevel=20)  # Set loglevel to 0 for debug information
+
+
+
+
+
 
 #%%
 # Add readers for wind and current
-reader_arome = reader_netCDF_CF_generic.Reader('data/arome_subset_16Nov2015.nc')
-reader_norkyst = reader_netCDF_CF_generic.Reader('data/norkyst800_subset_16Nov2015.nc')
-o.add_reader([reader_norkyst, reader_arome])
+reader_vent = reader_netCDF_CF_generic.Reader("data/arome_uv_2026-01-11T00:00:00Z.nc")
+reader_courant = reader_netCDF_CF_generic.Reader('data_copernicus/courants_manche_atl_-9.0-3.5_43.0-52.5_2026-01-11.nc')
+o.add_reader([reader_courant, reader_vent])
 
 #%%
 # Seed elements
-time = reader_arome.start_time
+time = reader_vent.start_time
 object_type = 1  # 1: Person-in-water (PIW), unknown state (mean values)
-o.seed_elements(lon=6.55, lat=61.117594, radius=50, number=10, time=time, object_type=object_type)
+o.seed_elements(lon=-1, lat=50, radius=50, number=10, time=time, object_type=object_type)
 
 #%%
 # Running model for 12 hours, using small time step due to high resolution coastline
-o.run(duration=timedelta(hours=12), outfile='test_carte/simulation_result_fjord.nc', time_step=300, time_step_output=3600)
+o.run(duration=timedelta(hours=11), outfile='test_carte/simulation_result_fjord.nc', time_step=300, time_step_output=3600)
 
 #%%
 # Print and plot results
