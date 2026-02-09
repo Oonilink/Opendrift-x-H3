@@ -39,13 +39,10 @@ def run_simulation():
     })
 
 
-
     # Sauvegarde du fichier final
     ds_surf.to_netcdf(output_file)
 
     print("Fichier converti avec succès :", output_file)
-
-
 
 
 

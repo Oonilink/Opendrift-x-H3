@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation de dérive - OpenDrift</title>
+    <link href="{{ url_for('public', path='/styles.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="/app/css/form.css"></style>
+
+</head>
+<body>
+
+<div class="container">
+    <h1>🌊 Lancer une Simulation de Dérive</h1>
+    
+    <form action="/run" method="post">
+        
+        <!-- Date/Heure -->
+        <div class="form-group">
+            <label for="date">Date de début de la simulation</label>
+            <input type="date" id="date" name="date" required>
+            <div class="info-text">Format: AAAA-MM-JJ</div>
+        </div>
+        
+        <!-- Localisation -->
+        <div class="form-group">
+            <label>Localisation de départ</label>
+            <div class="location-fields">
+                <div>
+                    <label for="lat" style="margin-bottom: 5px;">Latitude</label>
+                    <input type="number" id="lat" name="lat" step="0.01" min="-90" max="90" required placeholder="ex: 50.5">
+                    <div class="info-text">-90 à 90</div>
+                </div>
+                <div>
+                    <label for="lon" style="margin-bottom: 5px;">Longitude</label>
+                    <input type="number" id="lon" name="lon" step="0.01" min="-180" max="180" required placeholder="ex: -1.5">
+                    <div class="info-text">-180 à 180</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Durée -->
+        <div class="form-group">
+            <label for="duree">Durée de la simulation</label>
+            <input type="number" id="duree" name="duree" min="1" max="720" required placeholder="ex: 24">
+            <div class="info-text">En heures (1-720)</div>
+        </div>
+        
+        <!-- Bouton Submit -->
+        <button type="submit">Lancer la simulation</button>
+    </form>
+</div>
+
+</body>
+</html>
