@@ -48,3 +48,12 @@ def run_full_pipeline(params):
 
     return map_path
 
+
+if __name__ == "__main__":
+    params = {
+        "date": "2026-02-08",
+        "lat": 47.0,
+        "lon": -1.0,
+        "duree": 48
+    }
+    run_full_pipeline(params)
