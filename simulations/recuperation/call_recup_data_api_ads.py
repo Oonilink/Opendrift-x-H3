@@ -22,7 +22,11 @@ import math
 8.63
 '''
 
-
+########################
+########################
+#Attention a cdsapi, il faut que le fichier soit au bon endroit 
+########################
+########################
 
 
 #CONFIGURATION FICHIER .CDSAPIRC
@@ -117,7 +121,7 @@ def recup_data_ads(lat_min, lat_max, lon_min, lon_max, date_start, date_end):
     ds_stacked = dsAPI.stack(time=("forecast_reference_time", "forecast_period"))
     ds_stacked = ds_stacked.reset_index(["forecast_reference_time", "forecast_period"])
 
-    # 4. ✅ Convertis le temps en datetime64
+    # 4. Convertis le temps en datetime64
     time_datetime = pd.to_datetime(time_values, unit='s')
     ds_stacked = ds_stacked.assign_coords({"time": ("time", time_datetime)})
 
@@ -145,19 +149,20 @@ def recup_data_ads(lat_min, lat_max, lon_min, lon_max, date_start, date_end):
 
 if __name__ == "__main__":
     parameters = { "date": "2026-02-08",
-                "lat": 47.0, 
+                "lat": 50.0, 
                 "lon": -1.0,
                  "duree": 12 } 
 
     
     #Permet d'avoir une date de fin dynamique en fonction de la date de début et de la durée souhaitée
-    
     # arrondi au jour supérieur si heure > 00:00 pour éviter les problèmes de disponibilité des données
     date_start_dt = datetime.datetime.strptime(parameters["date"], "%Y-%m-%d")
 
     nb_days = math.ceil(parameters["duree"] / 24)
 
     date_end = (date_start_dt + datetime.timedelta(days=nb_days)).strftime("%Y-%m-%d")
+
+    
 
     recup_data_ads(str(parameters["lat"]-3.0), 
                         str(parameters["lat"]+3.0),

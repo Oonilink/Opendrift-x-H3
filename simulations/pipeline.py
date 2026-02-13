@@ -2,8 +2,8 @@ import os
 import hashlib
 import json
 
-from simulations.recuperation.recup_data_api_copernicus import recup_data_copernicus
-from simulations.recuperation.recup_data_api_meteo_fr import recup_data_arome_meteo_f, fusionner_uv
+from simulations.recuperation.call_recup_data_api_copernicus import recup_data_copernicus
+from simulations.recuperation.call_recup_data_api_ads import recup_data_arome_meteo_f, fusionner_uv
 from simulations.core.manche_example import run_simulation
 from simulations.plotting.carte_interactive import create_map
 

@@ -73,7 +73,7 @@ def recup_data_copernicus(lat_min, lat_max, lon_min, lon_max, date_start, date_e
 
 if __name__ == "__main__":
     parameters = { "date": "2026-02-08",
-                "lat": 47.0, 
+                "lat": 50.0, 
                 "lon": -1.0,
                 "duree": 12 }
     
