@@ -4,10 +4,10 @@ import json
 import datetime
 import math
 
-from recuperation.call_recup_data_api_copernicus import recup_data_copernicus
-from recuperation.call_recup_data_api_ads import recup_data_ads
-from core.test_opendrift_data_n import run_simulation
-from plotting.carte_interactive import create_map
+from .recuperation.call_recup_data_api_copernicus import recup_data_copernicus
+from .recuperation.call_recup_data_api_ads import recup_data_ads
+from .core.test_opendrift_data_n import run_simulation
+from .plotting.carte_interactive import create_map
 
 
 

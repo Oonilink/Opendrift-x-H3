@@ -3,6 +3,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.responses import FileResponse
+from simulations import pipeline
+import datetime
 
 
 from simulations.pipeline import run_full_pipeline
@@ -52,7 +54,7 @@ async def run_simulation(
     print("PARAMS RECUS:", params)
 
     # 👉 ici plus tard :
-    # result = pipeline.run(params)
+    result = pipeline.run_full_pipeline(params)
 
     """
     return templates.TemplateResponse(

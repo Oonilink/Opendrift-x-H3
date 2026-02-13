@@ -17,7 +17,7 @@ import xarray as xr
 
 
 ######### LECTURE DU NETCDF (aucune simulation exécutée) ###########
-ds = xr.open_dataset("simulation_result_fjord.nc")
+ds = xr.open_dataset("results/results_simulations/26fbfcfc9998e5cdacd816df4efb1f89/trajectoire.nc")
 lat = ds["lat"].values   # tableau [temps, particules]
 lon = ds["lon"].values
 
