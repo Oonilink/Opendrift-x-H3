@@ -6,7 +6,7 @@
     <title>Simulation de dérive - OpenDrift</title>
     <link href="{{ url_for('public', path='/styles.css') }}" rel="stylesheet">
 
-    <link rel="stylesheet" href="/app/css/form.css"></style>
+    <link rel="stylesheet" href="{{ url_for('app', path='css/form.css') }}">
 
 </head>
 <body>
@@ -50,6 +50,13 @@
         <!-- Bouton Submit -->
         <button type="submit">Lancer la simulation</button>
     </form>
+    
+    <!-- Résultat de la simulation -->
+        {% if message %}
+            <div class="result-message">
+                <p>{{ message | safe }}</p>
+            </div>
+        {% endif %}
 </div>
 
 </body>
