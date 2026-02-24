@@ -87,13 +87,13 @@ def run_simulation(wind, current, params, sim_folder):
 
     #%%
     # Print and plot results
-    print(o)
+    #print(o)
    
 
     #%%
     # .. image:: /gallery/animations/example_fjord_0.gif
 
-    o.plot()
+    #o.plot()
 
     print("coucouuuuuu")
 

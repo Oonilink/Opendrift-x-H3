@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation de dérive - OpenDrift</title>
+    <link href="{{ url_for('public', path='/styles.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 750px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #fe5186;
+            margin: 0;
+        }
+        .new-btn {
+            padding: 10px 20px;
+            background-color: #fe5186;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+        .new-btn:hover {
+            background-color: #e63e73;
+        }
+        .sim-card {
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .sim-card:hover {
+            box-shadow: 0 2px 8px rgba(254, 81, 134, 0.15);
+            border-color: #fe5186;
+        }
+        .mini-map {
+            width: 120px;
+            height: 90px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            z-index: 0;
+        }
+        .sim-info {
+            flex: 1;
+        }
+        .sim-info .date {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+            color: #333;
+        }
+        .sim-info .coords, .sim-info .duree {
+            font-size: 13px;
+            color: #666;
+        }
+        .voir-btn {
+            padding: 8px 18px;
+            background-color: #fe5186;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+        }
+        .voir-btn:hover {
+            background-color: #e63e73;
+        }
+        .empty {
+            text-align: center;
+            color: #999;
+            padding: 40px 0;
+            font-size: 15px;
+        }
+        .empty a {
+            color: #fe5186;
+        }
+        .message {
+            margin-top: 20px;
+            text-align: center;
+            padding: 12px;
+            background-color: #fff0f5;
+            border-radius: 4px;
+            border: 1px solid #ffc0d0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Simulation OpenDrift</h1>
+        <a href="/form" class="new-btn">+ Nouvelle simulation</a>
+    </div>
+
+    {% if message %}
+        <div class="message">{{ message | safe }}</div>
+    {% endif %}
+
+    {% if simulations %}
+        {% for sim in simulations %}
+        <div class="sim-card">
+            <div id="map-{{ loop.index }}" class="mini-map"
+                 data-lat="{{ sim.params.lat }}"
+                 data-lon="{{ sim.params.lon }}">
+            </div>
+            <div class="sim-info">
+                <div class="date">{{ sim.params.date }}</div>
+                <div class="coords">Lat: {{ sim.params.lat }} — Lon: {{ sim.params.lon }}</div>
+                <div class="duree">Durée : {{ sim.params.duree }}h</div>
+            </div>
+            <a href="/result/{{ sim.sim_id }}" class="voir-btn">Voir la carte</a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty">
+            Aucune simulation pour l'instant.<br>
+            <a href="/form">Lancer une première simulation</a>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    // Initialise une mini carte Leaflet pour chaque simulation
+    document.querySelectorAll('.mini-map').forEach(function(el) {
+        const lat = parseFloat(el.dataset.lat);
+        const lon = parseFloat(el.dataset.lon);
+
+        const map = L.map(el, {
+            center: [lat, lon],
+            zoom: 5,
+            zoomControl: false,
+            dragging: false,
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
+            boxZoom: false,
+            keyboard: false,
+            attributionControl: false
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        // Marqueur rose au point de départ
+        const icon = L.divIcon({
+            html: '<div style="width:10px;height:10px;background:#fe5186;border:2px solid white;border-radius:50%;box-shadow:0 0 4px rgba(0,0,0,0.4);"></div>',
+            iconSize: [10, 10],
+            iconAnchor: [5, 5],
+            className: ''
+        });
+
+        L.marker([lat, lon], { icon: icon }).addTo(map);
+    });
+</script>
+</body>
+</html>
