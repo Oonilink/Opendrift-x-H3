@@ -17,6 +17,19 @@ import pandas as pd
 
 
 def recup_data_copernicus(lat_min, lat_max, lon_min, lon_max, date_start, date_end):
+    """
+    Récupère les données de courants depuis l'API Copernicus Marine avec les identifiants contenus dans un fichier env
+    Sauvegarde ensuite les données dans un fichier NetCDF opérationnel pour Opendrift
+    Args:
+        lat_min (str): Latitude minimale de la zone
+        lat_max (str): Latitude maximale de la zone
+        lon_min (str): Longitude minimale de la zone
+        lon_max (str): Longitude maximale de la zone
+        date_start (str): Date de début au format "YYYY-MM-DD"
+        date_end (str): Date de fin au format "YYYY-MM-DD"
+    return:
+        None
+    """
 
     load_dotenv()
 

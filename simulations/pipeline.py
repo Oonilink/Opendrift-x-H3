@@ -15,12 +15,26 @@ RESULTS_DIR = "results/results_simulations"
 
 
 def hash_params(params):
+    """
+    Crée un identifiant unique qui sera propre à chaque simulation en fonction des paramètres de cette dernère
+    Args:
+        params (dict): Dictionnaire contenant les paramètres de la simulation (lat, lon, date, durée)
+    return:
+        str: Identifiant unique généré à partir des paramètres de la simulation
+    """
     s = json.dumps(params, sort_keys=True)
     return hashlib.md5(s.encode()).hexdigest()
 
 
 
 def run_full_pipeline(params):
+    """
+    Exécute l'ensemble du pipeline de récupération des données, simulation et création de la carte interactive
+    Args:
+        params (dict): Dictionnaire contenant les paramètres de la simulation (lat, lon, date, durée)
+    return:
+        str: Chemin vers la carte HTML générée (map.html)
+    """
 
     #1️ créer identifiant unique pour params qui nomme les simulations
     sim_id = hash_params(params)

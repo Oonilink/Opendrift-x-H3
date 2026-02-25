@@ -17,14 +17,16 @@ import xarray as xr
 
 def create_map(fichier_nc, map_path):
     """
-    Docstring pour create_map
+    Crée une carte interactive HTML avec Folium à partir d'un fichier NetCDF de trajectoires Opendrift
     
-    :param fichier_nc: fichier NetCDF contenant les résultats de la simulation
-    :param map_path: chemin de sauvegarde de la carte HTML générée
-    :return: None (la carte est sauvegardée à map_path)
+    Args:
+        fichier_nc (str): Chemin vers le fichier NetCDF de trajectoires Opendrift
+        map_path (str): Chemin de sauvegarde de la carte HTML générée   
+    return:
+        None (sauvegarde la carte au format HTML dans results/results_simulations/{sim_id}/map.html)
 
     """
-    ######### LECTURE DU NETCDF (aucune simulation exécutée) ###########
+    ######### LECTURE DU NETCDF (aucune simulation exécutée) ##########
     ds = xr.open_dataset(fichier_nc)
     lat = ds["lat"].values   # tableau [temps, particules]
     lon = ds["lon"].values
@@ -47,16 +49,14 @@ def create_map(fichier_nc, map_path):
     lon_init = float(lon[0,0])
 
 
-    ########couleur
+    # Définition d'une palette de couleurs pour les trajectoires
     # Palette tab20 avec nb_trajectoire couleurs
     cmap = matplotlib.colormaps.get_cmap("tab20")
     colors = [mcolors.to_hex(cmap(i / nb_trajectoire)) for i in range(nb_trajectoire)]
 
 
 
-
-
-
+    # Gestion de l'index h3 pour l'animation
     resolution = 10
     h3_index_init = latlng_to_cell(lat_init, lon_init, resolution)
     center = cell_to_latlng(h3_index_init)

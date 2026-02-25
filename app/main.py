@@ -6,6 +6,8 @@ from simulations.pipeline import run_full_pipeline
 import os
 import json
 
+
+#Configuration de Fast API
 app = FastAPI()
 
 app.mount("/app", StaticFiles(directory="app"), name="app")
@@ -18,7 +20,14 @@ RESULTS_DIR = "results/results_simulations"
 
 
 def get_simulations():
-    """Récupère la liste de toutes les simulations complètes."""
+    """
+    Récupère la liste de toutes les simulations complètes.
+    Args:
+        None
+    return:
+        list: Liste de dictionnaires qui contiennent chacuns les paramètres d'une simulation et son identifiant
+    
+    """
     simulations = []
     if os.path.exists(RESULTS_DIR):
         for sim_id in os.listdir(RESULTS_DIR):

@@ -1,7 +1,7 @@
 import xarray as xr
 import cdsapi
 import os
-os.environ['XARRAY_NETCDF_ENGINE'] = 'netcdf4'  # ← Ajoute cette ligne AVANT copernicusmarine
+os.environ['XARRAY_NETCDF_ENGINE'] = 'netcdf4'
 
 import copernicusmarine
 import zipfile
@@ -15,27 +15,40 @@ import math
 
 
 
-########################
-########################
-#Attention a cdsapi, il faut que le fichier soit au bon endroit 
-########################
-########################
+###############################################
+###############################################
+# Attention au fichier cdsapi, il faut que le fichier soit au bon endroit, dans le HOME
+# Voir https://ads.atmosphere.copernicus.eu/how-to-api pour plus d'infos sur la configuration du fichier .cdsapirc et l'accès à l'API ADS
+###############################################
+###############################################
 
 
 #CONFIGURATION FICHIER .CDSAPIRC
 
 
 def recup_data_ads(lat_min, lat_max, lon_min, lon_max, date_start, date_end):
+    """
+    Récupère les données de vent depuis l'API ADS et les sauvegarde dans un fichier NetCDF opérationnel pour Opendrift
+    Args:
+        lat_min (str): Latitude minimale de la zone
+        lat_max (str): Latitude maximale de la zone
+        lon_min (str): Longitude minimale de la zone
+        lon_max (str): Longitude maximale de la zone
+        date_start (str): Date de début au format "YYYY-MM-DD"
+        date_end (str): Date de fin au format "YYYY-MM-DD"
+    return:
+        None
+    """
     import subprocess
 
-    # Nettoyage
+    # Nettoyage des anciens fichiers
     for f in glob.glob("simulations/data_in/wind*.nc"):
         if os.path.exists(f):
             os.remove(f)
             print(f"Supprimé : {f}")
 
 
-    #API VENTS
+
 
     client = cdsapi.Client()
 
@@ -60,11 +73,9 @@ def recup_data_ads(lat_min, lat_max, lon_min, lon_max, date_start, date_end):
     print("Extraction terminée !")
 
 
-    #TRANSFORMATION FICHIER VENTS
+    #TRANSFORMATION FICHIER VENTS ADS POUR Opendrift
 
-    #TRANSFORMATION FICHIER VENTS
-
-    # 1. Chargez et corrigez votre fichier
+    # 1. Chargement et correction du fichier
     nc = netCDF4.Dataset('simulations/data_in/data_sfc.nc', 'r')
 
     data_vars = {}
