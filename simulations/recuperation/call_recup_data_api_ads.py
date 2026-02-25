@@ -24,27 +24,6 @@ import math
 
 #CONFIGURATION FICHIER .CDSAPIRC
 
-url = "https://ads.atmosphere.copernicus.eu/api"
-key = "340ed7ce-a15e-47e4-9559-5b38c9c1269a"
-
-config_path = os.path.expanduser("~/.cdsapirc")
-try:
-    # Créez ou écrasez le fichier
-    with open(config_path, 'w') as f:
-        f.write(f"url: {url}\n")
-        f.write(f"key: {key}\n")
-
-    print(f"Fichier .cdsapirc créé/mis à jour: {config_path}")
-
-    # Vérifiez le contenu
-    with open(config_path, 'r') as f:
-        print("\nContenu du fichier:")
-        print(f.read())
-
-
-except Exception as e:
-    print(f"Erreur lors de la création du fichier: {e}")
-
 
 def recup_data_ads(lat_min, lat_max, lon_min, lon_max, date_start, date_end):
     import subprocess
