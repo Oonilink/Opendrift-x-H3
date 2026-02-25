@@ -23,10 +23,12 @@ There are the main frameworks/libraries we used to design the project.
 1. Clone the repository : 
 
 ```git clone https://github.com/github_username/repo_name.git```
+
 3. Install packages (in a venv)
 ```pip install -r requirements.txt```
 4. Get a free API at       AND create a copernicus account.
-5. Enter the keys in a ```.env``` file
+   
+6. Enter the keys in a ```.env``` file
 
 ```
 TOKEN_METEO_FR=
@@ -47,6 +49,9 @@ INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 
 Here is the documents that helped us to realise our project. There are among those ressources, web sites, videos, tutorials and even forum discussions.
 
+[CDSAPI setup](https://ads.atmosphere.copernicus.eu/how-to-api )
+
+[othneildrew/Best-README-Template](https://github.com/othneildrew/Best-README-Template )
 
 [Comparison of FastAPI with Django and Flask, 2025. GeeksforGeeks](https://www.geeksforgeeks.org/python/comparison-of-fastapi-with-django-and-flask/ )
 
@@ -54,7 +59,7 @@ Here is the documents that helped us to realise our project. There are among tho
 
 [DEMCHENKO, Denys, 2023. 9 Companies that Use FastAPI](https://www.planeks.net/companies-using-fastapi/).
 
-[GRAVEN - DÉVELOPPEMENT, 2024. Apprendre le Python #13 - Les Environnements Virtuels (venv)]([https://www.youtube.com/watch?v=Hs07URZ7TMo]
+[GRAVEN - DÉVELOPPEMENT, 2024. Apprendre le Python #13 - Les Environnements Virtuels (venv)](https://www.youtube.com/watch?v=Hs07URZ7TMo)
 
 [Le guide complet du débutant avec FastAPI, Vincent Jousse](https://vincent.jousse.org/blog/fr/tech/le-guide-complet-du-debutant-avec-fastapi-partie-1/).
 
