@@ -109,11 +109,17 @@ async def run_simulation(
 # -------------------------
 @app.get("/result/{sim_id}", response_class=HTMLResponse)
 async def show_result(request: Request, sim_id: str):
+    # Lire le params.json de la simulation
+    params_path = os.path.join(RESULTS_DIR, sim_id, "params.json")
+    with open(params_path) as f:
+        params = json.load(f)
+
     return templates.TemplateResponse(
         "result.html",
         {
             "request": request,
             "sim_id": sim_id,
-            "map_url": f"/results/results_simulations/{sim_id}/map.html"
+            "map_url": f"/results/results_simulations/{sim_id}/map.html",
+            "params": params
         }
     )
