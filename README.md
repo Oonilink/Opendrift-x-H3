@@ -1,5 +1,7 @@
 # Opendrift-x-H3
 
+Python 3.8.3
+
 
 <img src="https://img.shields.io/badge/MIT-green?style=for-the-badge" />
 
@@ -26,14 +28,19 @@ There are the main frameworks/libraries we used to design the project.
 ## Installation
 
 1. Clone the repository : 
-```git clone https://github.com/github_username/repo_name.git```
+```git clone https://github.com/Oonilink/Opendrift-x-H3.git```
 
-2. Install packages (in a venv)
+2. Install critical dependencies via conda
+```conda install gdal cartopy netcdf4 numpy scipy```
+
+
+
+4. Install packages (in a venv)
 ```pip install -r requirements.txt```
 
-3. Create an ECMWF account and get a free ADS API key, get more information at [CDSAPI setup](https://ads.atmosphere.copernicus.eu/how-to-api) .
+5. Create an ECMWF account and get a free ADS API key, get more information at [CDSAPI setup](https://ads.atmosphere.copernicus.eu/how-to-api) .
 
-4. Copy the acces details to a file $HOME/.cdsapirc like below :
+6. Copy the acces details to a file $HOME/.cdsapirc like below :
 
 ```
 url: https://ads.atmosphere.copernicus.eu/api
