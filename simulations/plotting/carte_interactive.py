@@ -57,13 +57,12 @@ def create_map(fichier_nc, map_path):
 
 
     # Gestion de l'index h3 pour l'animation
-    resolution = 10
+    resolution = 7
     h3_index_init = latlng_to_cell(lat_init, lon_init, resolution)
     center = cell_to_latlng(h3_index_init)
 
 
-    #%%
-    # .. image:: /gallery/animations/example_fjord_0.gif
+    
 
 
 
